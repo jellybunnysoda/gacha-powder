@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>Drop Calculator</title>
+  <title>Lucky Drop Calculator</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
 
@@ -84,7 +84,6 @@
     #percent-value {
       font-size: 5rem;
       font-weight: bold;
-      color: #ffd700;
       opacity: 0;
       transform: scale(0.8);
       transition: all 0.4s ease;
@@ -209,7 +208,14 @@
       const totalProb = 1 - Math.pow(1 - chance, count);
       const percent = Math.round(totalProb * 10000) / 100;
 
-      percentEl.style.color = "#ffd700";
+      if (percent < 60) {
+        percentEl.style.color = "#00ff66"; // เขียว
+      } else if (percent < 80) {
+        percentEl.style.color = "#ffd700"; // เหลือง
+      } else {
+        percentEl.style.color = "#ff5555"; // แดง
+      }
+
       percentEl.textContent = `${percent}%`;
       percentEl.classList.remove("animate");
       void percentEl.offsetWidth;
