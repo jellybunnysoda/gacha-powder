@@ -2,86 +2,217 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>คำนวณโอกาสดรอปไอเทมสะสม 🍀</title>
+  <title>Lucky Drop Calculator</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
     body {
-      font-family: "Prompt", sans-serif;
-      background: #fefefe;
-      color: #333;
-      padding: 2rem;
-      max-width: 500px;
-      margin: auto;
+      margin: 0;
+      padding: 0;
+      font-family: 'Prompt', sans-serif;
+      background: url('https://i.postimg.cc/tTzBQRfJ/SPOILER-2025-06-19-03-50-13.png') center/cover no-repeat;
+      background-color: rgba(0, 0, 0, 0.7);
+      background-blend-mode: darken;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-    h1 {
-      color: #4caf50;
-      font-size: 1.8rem;
+
+    .profile-bar {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      background: #000;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+    }
+
+    .profile-bar img {
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      margin-right: 8px;
+      border: 2px solid;
+      border-image: linear-gradient(45deg, #ff5f6d, #ffc371) 1;
+      padding: 1px;
+      background: #000;
+    }
+
+    .profile-bar .name {
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: row;
+      background: rgba(0, 0, 0, 0.75);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .left-box, .right-box {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .left-box {
+      background: transparent;
       text-align: center;
     }
-    label {
-      display: block;
-      margin-top: 1rem;
+
+    .label {
+      font-size: 1.5rem;
+      color: #ddd;
+      margin-bottom: 1rem;
+    }
+
+    #percent-value {
+      font-size: 5rem;
       font-weight: bold;
+      color: #ffd700;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.4s ease;
+      text-shadow: none;
     }
-    input {
-      padding: 0.5rem;
+
+    .animate {
+      opacity: 1 !important;
+      transform: scale(1.1) !important;
+    }
+
+    .right-box h1 {
+      color: #fff;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .right-box label {
+      display: block;
+      margin: 1rem 0 0.2rem;
+      font-weight: 600;
+      color: #ddd;
+    }
+
+    .right-box input {
       width: 100%;
-      margin-top: 0.2rem;
+      padding: 0.6rem;
       font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      background: #444;
+      color: #fff;
+      border: 1px solid #666;
+      border-radius: 10px;
     }
-    button {
-      margin-top: 1.5rem;
-      padding: 0.7rem;
-      font-size: 1rem;
-      background: #4caf50;
-      color: white;
+
+    .right-box button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 0.8rem;
+      background: linear-gradient(to right, #ffd700, #ff9900);
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
+      color: #1e1e2f;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      width: 100%;
+      transition: 0.3s;
     }
-    button:hover {
-      background: #43a047;
+
+    .right-box button:hover {
+      filter: brightness(1.2);
     }
-    #result {
+
+    .warning {
+      color: #ff5555;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .description {
       margin-top: 1.5rem;
+      text-align: center;
+      color: white;
+      max-width: 800px;
+      font-size: 0.95rem;
+      background: rgba(0,0,0,0.4);
       padding: 1rem;
-      background: #eeeeee;
-      border-left: 5px solid #4caf50;
-      font-size: 1.2rem;
-      border-radius: 6px;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>คำนวณโอกาสดรอปไอเทมสะสม 🍀</h1>
+  <div class="profile-bar">
+    <img src="https://i.postimg.cc/SNLWxQff/Kiyomikuroi.png" alt="Profile">
+    <div class="name">Create by Kiyomikuroi</div>
+  </div>
 
-  <label for="chance">โอกาสดรอปต่อครั้ง (เช่น 0.05 หรือ 5%)</label>
-  <input type="number" step="any" id="chance" placeholder="ใส่ค่าเช่น 0.05">
+  <div class="wrapper">
+    <div class="left-box">
+      <div class="label">โอกาสสะสมทั้งหมด</div>
+      <div id="percent-value">--%</div>
+    </div>
+    <div class="right-box">
+      <h1>คำนวณโอกาสดรอปไอเทม</h1>
+      <label for="chance">โอกาสดรอปต่อครั้ง (เช่น 0.05 หรือ 5%)</label>
+      <input type="number" step="any" id="chance" placeholder="0.05" min="0" max="1">
 
-  <label for="count">จำนวนครั้งที่จัดการมอนสเตอร์</label>
-  <input type="number" id="count" placeholder="ใส่จำนวนครั้ง เช่น 20">
+      <label for="count">จำนวนครั้งที่จัดการมอนสเตอร์</label>
+      <input type="number" id="count" placeholder="20" min="1">
 
-  <button onclick="calculate()">คำนวณเลย!</button>
+      <button onclick="calculate()">ยืนยัน</button>
+      <div id="warning" class="warning">กรุณากรอกค่าให้ถูกต้อง: โอกาสต้องมากกว่า 0 และไม่เกิน 1, จำนวนครั้งต้องมากกว่า 0</div>
+    </div>
+  </div>
 
-  <div id="result"></div>
+  <div class="description">
+    ใช้สำหรับคำนวณโอกาสรวมของการดรอปไอเทมจากมอนสเตอร์ <br>
+    โดยใส่ค่าความน่าจะเป็นต่อครั้ง (เช่น 5% ให้ใส่ 0.05) และจำนวนครั้งที่จัดการ เพื่อดูว่ามีโอกาสดรอปเท่าไรโดยรวม
+  </div>
 
   <script>
     function calculate() {
-      const chance = parseFloat(document.getElementById("chance").value);
-      const count = parseInt(document.getElementById("count").value);
-      const resultDiv = document.getElementById("result");
+      const chanceInput = document.getElementById("chance");
+      const countInput = document.getElementById("count");
+      const warningEl = document.getElementById("warning");
+      const chance = parseFloat(chanceInput.value);
+      const count = parseInt(countInput.value);
+      const percentEl = document.getElementById("percent-value");
 
-      if (isNaN(chance) || isNaN(count) || chance <= 0 || count <= 0) {
-        resultDiv.textContent = "กรุณาใส่ค่าที่ถูกต้องทั้งสองช่องนะคะ!";
+      if (isNaN(chance) || isNaN(count) || chance <= 0 || chance > 1 || count <= 0) {
+        percentEl.textContent = "--%";
+        percentEl.style.color = "#ff5555";
+        percentEl.classList.remove("animate");
+        warningEl.style.display = "block";
         return;
       }
 
-      const totalProb = 1 - Math.pow(1 - chance, count);
-      const percent = Math.round(totalProb * 100);
+      warningEl.style.display = "none";
 
-      resultDiv.textContent = `โอกาสที่ไอเทมจะดรอป ${percent}% หลังจากฆ่ามอน ${count} ตัว 💥`;
+      const totalProb = 1 - Math.pow(1 - chance, count);
+      const percent = Math.round(totalProb * 10000) / 100;
+
+      percentEl.style.color = "#ffd700";
+      percentEl.textContent = `${percent}%`;
+      percentEl.classList.remove("animate");
+      void percentEl.offsetWidth;
+      percentEl.classList.add("animate");
     }
   </script>
 </body>
