@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>คำนวณโอกาสดรอปไอเทมสะสม 🍀</title>
+  <style>
+    body {
+      font-family: "Prompt", sans-serif;
+      background: #fefefe;
+      color: #333;
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      color: #4caf50;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input {
+      padding: 0.5rem;
+      width: 100%;
+      margin-top: 0.2rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem;
+      font-size: 1rem;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #43a047;
+    }
+    #result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #eeeeee;
+      border-left: 5px solid #4caf50;
+      font-size: 1.2rem;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>คำนวณโอกาสดรอปไอเทมสะสม 🍀</h1>
+
+  <label for="chance">โอกาสดรอปต่อครั้ง (เช่น 0.05 หรือ 5%)</label>
+  <input type="number" step="any" id="chance" placeholder="ใส่ค่าเช่น 0.05">
+
+  <label for="count">จำนวนครั้งที่จัดการมอนสเตอร์</label>
+  <input type="number" id="count" placeholder="ใส่จำนวนครั้ง เช่น 20">
+
+  <button onclick="calculate()">คำนวณเลย!</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculate() {
+      const chance = parseFloat(document.getElementById("chance").value);
+      const count = parseInt(document.getElementById("count").value);
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(chance) || isNaN(count) || chance <= 0 || count <= 0) {
+        resultDiv.textContent = "กรุณาใส่ค่าที่ถูกต้องทั้งสองช่องนะคะ!";
+        return;
+      }
+
+      const totalProb = 1 - Math.pow(1 - chance, count);
+      const percent = Math.round(totalProb * 100);
+
+      resultDiv.textContent = `โอกาสที่ไอเทมจะดรอป ${percent}% หลังจากฆ่ามอน ${count} ตัว 💥`;
+    }
+  </script>
+</body>
+</html>
